@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+import os
+
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     'detect_api',
+     'restrictionRules'
 ]
 
 MIDDLEWARE = [
@@ -85,16 +91,32 @@ WSGI_APPLICATION = 'prodetectBackendDjango.wsgi.application'
 
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'prodetect_postgresql_api_two',
+#         'USER': 'prodetect_postgresql_api_two_user',
+#         'PASSWORD': 'MFhVtFl5E9eQ8gUxr8ueCo2IlLH24VVr',
+#         'HOST': 'dpg-cqlqo5tumphs739lbn7g-a.oregon-postgres.render.com',
+#         'PORT': '5432',
+#     }
+# }
+
+
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'prodetect_postgresql_api_two',
-        'USER': 'prodetect_postgresql_api_two_user',
-        'PASSWORD': 'MFhVtFl5E9eQ8gUxr8ueCo2IlLH24VVr',
-        'HOST': 'dpg-cqlqo5tumphs739lbn7g-a.oregon-postgres.render.com',
+        'NAME': 'prodetect_rulebased_db',
+        'USER': 'prodetect_rulebased_db_user',
+        'PASSWORD': '7ateg70GEzZ5cWE2qX0SG3I5RHDqtATN',
+        'HOST': 'dpg-crg71qaj1k6c739eeucg-a.oregon-postgres.render.com',
         'PORT': '5432',
     }
 }
+
+
 
 
 
@@ -138,3 +160,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+### loading environement variables from dotenv
+
+load_dotenv()
+
+ASSEMBLY_AI_API_KEY = os.getenv('ALLOWED_HOSTS').split(',')
+
+
+

@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 import numpy as np
 import pandas as pd
 from django.db import connection
+from .models import TransactioRiskScore
 
 # Load the transformer and model
 # with open('transformer.pkl', 'rb') as file:
@@ -286,3 +287,11 @@ def predict_transaction(request):
             return JsonResponse({'error': str(e)})
     else:
         return JsonResponse({'error': 'Invalid request method.'})
+    
+
+
+   
+
+def get_all_transactions(request):
+    transactions = TransactioRiskScore.objects.all().values()
+    return JsonResponse(list(transactions), safe=False)

@@ -1,0 +1,23 @@
+# Ignore Python bytecode
+*.pyc
+__pycache__/
+
+# Ignore environment variables
+.env
+
+# Ignore system files
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# Ignore virtual environment
+venv/
+
+# Ignore database files
+*.sqlite3
+
+# Ignore static and media files (if generated)
+/staticfiles/
+/mediafiles/
+
+# Ignore IDE settings (for VS Code)
+.vscode/

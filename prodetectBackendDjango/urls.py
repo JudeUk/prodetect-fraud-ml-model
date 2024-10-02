@@ -15,10 +15,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from detect_api.views import predict_transaction
+from django.urls import include, path
+from detect_api.views import predict_transaction 
+from detect_api.views import get_all_transactions
+from restrictionRules.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('predict/', predict_transaction, name='predict_transaction'),
+     path('api/', include('detect_api.urls')),
+        path('create-rule/', create_rule, name='create_rule'),
+    path('activate-rule/<int:rule_id>/', activate_rule, name='activate_rule'),
+    path('deactivate-rule/<int:rule_id>/', deactivate_rule, name='deactivate_rule'),
+    path('delete-rule/<int:rule_id>/', delete_rule, name='delete_rule'),
+    path('suspended-transactions/', view_suspended_transactions, name='view_suspended_transactions'),
+    path('check-transaction/', check_transaction, name='check_transaction'),  # New view to check transactions
+    path('manage-transaction/<int:transaction_id>/', manage_transaction, name='manage_transaction'),  # New view to manage transactions on hold
 ]
+
+
+
+
+

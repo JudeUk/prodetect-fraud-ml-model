@@ -59,7 +59,6 @@
 
 
 
-
 import psycopg2
 
 # Database connection parameters
@@ -74,12 +73,13 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 # Path to your CSV file
-csv_file_path = '/Users/judeukana/MestProjects/Python/NewCo/DataSets/transactions.csv'
+csv_file_path = '/Users/judeukana/MestProjects/Python/NewCo/DataSets/transactions_with_transactionid.csv'
 
 # SQL command to create the table if it does not exist
 create_table_query = '''
 CREATE TABLE IF NOT EXISTS transactions (
     id SERIAL PRIMARY KEY,
+    TransactionID VARCHAR(10),
     CustomerID VARCHAR(8),
     AccountNumber VARCHAR(8),
     TransactionType VARCHAR(6),
@@ -100,7 +100,7 @@ except psycopg2.Error as e:
 try:
     with open(csv_file_path, 'r', encoding='utf-8') as f:
         next(f)  # Skip the header row
-        cur.copy_expert("COPY transactions (CustomerID, AccountNumber,TransactionType,Amount,AccountBalance,ReceiverName,TransactionTime) FROM STDIN WITH CSV HEADER DELIMITER AS ','", f)
+        cur.copy_expert("COPY transactions (TransactionID, CustomerID, AccountNumber, TransactionType, Amount, AccountBalance, ReceiverName, TransactionTime) FROM STDIN WITH CSV HEADER DELIMITER AS ','", f)
 
     conn.commit()
 except psycopg2.Error as e:
@@ -112,5 +112,6 @@ cur.close()
 conn.close()
 
 print("Data loaded successfully")
+
 
 
