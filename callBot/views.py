@@ -22,7 +22,7 @@ class AI_Assistant:
       
       ####### Real Time Transcription with Assembly Ai
 
-      def start_transcription(self):
+   def start_transcription(self):
 
         self.transcriber = aai.RealtimeTranscriber(
            
@@ -41,7 +41,7 @@ class AI_Assistant:
 
 
 
-      def stop_transcription(self):
+   def stop_transcription(self):
          if self.transcriber:
             self.transcriber.close()
             self.transcriber = None
@@ -49,23 +49,48 @@ class AI_Assistant:
 
 
 
-def on_open(session_opened: aai.RealtimeSessionOpened):
-    print("Session ID:", session_opened.session_id)
-
-
-def on_data(transcript: aai.RealtimeTranscript):
-    if not transcript.text:
+   def on_open(self,session_opened: aai.RealtimeSessionOpened):
+        #print("Session ID:", session_opened.session_id)
+        # 
         return
 
-    if isinstance(transcript, aai.RealtimeFinalTranscript):
-        print(transcript.text, end="\r\n")
-    else:
-        print(transcript.text, end="\r")
+   def on_data(self,transcript: aai.RealtimeTranscript):
+       if not transcript.text:
+            return
+
+       if isinstance(transcript, aai.RealtimeFinalTranscript):
+            #print(transcript.text, end="\r\n")
+            self.generate_ai_response(transcript)
+       else:
+            print(transcript.text, end="\r")
 
 
-def on_error(error: aai.RealtimeError):
-    print("An error occured:", error)
+   def on_error(self,error: aai.RealtimeError):
+        print("An error occured:", error)
 
 
-def on_close():
-    print("Closing Session")
+   def on_close(self):
+        #print("Closing Session")
+        return
+   
+   def generate_ai_response(self,transcript):
+
+       self.stop_transcription()
+
+       self.full_transcript.append({"role":"user","content":transcript.text})
+
+       print("f\nPatient: {transcript.text}",end = "\r\n")
+
+       response = self.openai_client.chat.completions.create(
+           
+           model = "gpt-3.5-turbo",
+           messages = self.full_transcript
+
+       )
+
+       ai_response = response.choices[0].message.content
+
+       self.generate_audio(ai_response)
+
+       self.start_transcription()
+
