@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
      'detect_api',
-     'restrictionRules'
+     'restrictionRules',
+     'sanctions'
 ]
 
 MIDDLEWARE = [
@@ -166,7 +167,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 load_dotenv()
 
-ASSEMBLY_AI_API_KEY = os.getenv('ALLOWED_HOSTS').split(',')
+ASSEMBLY_AI_API_KEY = os.getenv('aai.settings.api_key')
+
+ELEVEN_LABS_API_KEY = os.getenv('eleven_labs_api_key')
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 
 

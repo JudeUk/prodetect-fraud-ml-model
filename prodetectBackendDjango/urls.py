@@ -19,6 +19,8 @@ from django.urls import include, path
 from detect_api.views import predict_transaction 
 from detect_api.views import get_all_transactions
 from restrictionRules.views import *
+from sanctions.views import sanctions_search_view
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +33,7 @@ urlpatterns = [
     path('suspended-transactions/', view_suspended_transactions, name='view_suspended_transactions'),
     path('check-transaction/', check_transaction, name='check_transaction'),  # New view to check transactions
     path('manage-transaction/<int:transaction_id>/', manage_transaction, name='manage_transaction'),  # New view to manage transactions on hold
+    path('sanctions/', include('sanctions.urls'))
 ]
 
 

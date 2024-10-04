@@ -1,16 +1,19 @@
-from django.shortcuts import render
+import os
+
 
 # Create your views here.
-import assembly as aai
+
+import assemblyai as aai
 from elevenlabs import generate,stream
-from openai import OpenAi
+from openai import OpenAI
 
 
 class AI_Assistant:
    def __init__(self):
-      aai.settings.api_key = 'API_KEY'
-      self.openai_client = OpenAi()
-      self.elevenlabs_api_key = "API_KEY"
+      self.ASSEMBLY_AI_API_KEY= os.getenv('aai.settings.api_key')
+      self.OPEN_API_KEY = os.getenv('OPENAI_API_KEY')
+      self.openai_client = OpenAI(api_key = "self.OPEN_API_KEY")
+      self.ELEVENLABS_API_KEY = os.getenv('eleven_labs_api_key')
 
       self.transcriber = None
 
@@ -79,7 +82,7 @@ class AI_Assistant:
 
        self.full_transcript.append({"role":"user","content":transcript.text})
 
-       print("f\nPatient: {transcript.text}",end = "\r\n")
+       print("f\nPatient or user: {transcript.text}",end = "\r\n")
 
        response = self.openai_client.chat.completions.create(
            
@@ -93,4 +96,30 @@ class AI_Assistant:
        self.generate_audio(ai_response)
 
        self.start_transcription()
+
+
+
+   def generate_audio(self,text):
+          
+          self.full_transcript.append({"role":"assistant","content":text})
+
+          print(f"\nAI Receptionist or ai assistant: {text}")
+
+          audio_stream = generate(
+               
+               api_key = self.ELEVENLABS_API_KEY,
+               text = text,
+               voice = "Alice",
+               stream = True
+          )
+
+          stream(audio_stream)
+
+
+greeting = "Thank you for calling Ecobank International. My name is Precious, how may i help you today"
+ai_assistant = AI_Assistant()
+ai_assistant.generate_audio(greeting)
+ai_assistant.start_transcription()
+
+
 
